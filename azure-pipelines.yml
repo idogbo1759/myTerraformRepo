@@ -17,3 +17,24 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'idogbo'
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'today'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'my-sonar'
+    cliProjectName: 'my-sonar'
+    cliSources: '.idogbo'
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: 'idogbo'
+    customCommand: 'run-build'
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
